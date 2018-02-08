@@ -8,8 +8,6 @@ struct node {
 };
 
 class heap {
-    node *root;
-
     bool comparetion(node *a, node *b){
         if (a->degree < b->degree)
             return true;
