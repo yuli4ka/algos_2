@@ -5,6 +5,7 @@
 #include <random>
 #include <iterator> //for vector copying
 #include <conio.h>
+#include <fstream>
 //https://neerc.ifmo.ru/wiki
 
 using namespace std;
@@ -229,7 +230,33 @@ public:
     }
 };
 
-
+void reading(vector<notebook> &v_notebook, vector<event> &v_event){
+    ifstream input("database.txt");
+    if (!input.is_open()){
+        cout << "Oooops. Batabase is clear(cannot find file)" << endl;
+        system("Pause");
+        return;
+    }
+    while (!input.eof()){
+        notebook new_notebook;
+        string data = "";
+        input >> data;
+        new_notebook.date.dat = data;
+        input >> data;
+        while (!input.eof() && data != "//"){
+            event new_event;
+            new_event.name = data;
+            input >> data;
+            new_event.place = data;
+            new_event.datepoint.dat = new_notebook.date.dat;
+            new_notebook.evets.push_back(new_event);
+            v_event.push_back(new_event);
+            input >> data;
+        }
+        v_notebook.push_back(new_notebook);
+    }
+    input.close();
+}
 
 int menu() {
         char key=0;
@@ -258,10 +285,15 @@ int menu() {
 int main(){
     vector<notebook> v_notebook;
     vector<event> v_event;
+    reading(v_notebook, v_event);
+
+    prime = prime_num(max(v_notebook.size(), v_event.size()));
+    //cout << prime << " prime" << endl;
+
     first_notebook f_notebook;
     first_event f_event;
 
-            notebook note;
+            /*notebook note;
             note.date.dat = "12.12.2012";
             //note.evets = "event11";
             event eve;
@@ -270,9 +302,13 @@ int main(){
             eve.place = "KNU";
             note.evets.push_back(eve);
             v_notebook.push_back(note);
-            v_event.push_back(eve);
+            v_event.push_back(eve);*/
 
             cout << "KKK" << endl;///////
+
+    cout << v_notebook[0].date.dat << " first date" << endl;
+    cout << v_event[0].name << " first event name" << endl;
+    cout << v_event[0].place << " first event place" << endl;
 
     f_notebook.making(v_notebook);
 
@@ -280,10 +316,10 @@ int main(){
 
     f_event.making(v_event);
 
-    long n_notebook = v_notebook.size();
-    long n_event = v_event.size();
+    cout << "GG" << endl;
 
-    prime = prime_num(max(n_notebook, n_event));
+    /*long n_notebook = v_notebook.size();
+    long n_event = v_event.size();*/
 
     char c=0;
     while (c!=4)
