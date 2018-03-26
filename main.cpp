@@ -4,6 +4,7 @@
 #include <string>
 #include <random>
 #include <iterator> //for vector copying
+#include <conio.h>
 //https://neerc.ifmo.ru/wiki
 
 using namespace std;
@@ -17,9 +18,9 @@ struct event{
     string place;
     date datepoint;
     event(){
-        name = "";
-        place = "";
-        datepoint.dat = "";
+        name = " ";
+        place = " ";
+        datepoint.dat = " ";
     }
 };
 
@@ -27,7 +28,7 @@ struct notebook{
     date date;
     vector<event> evets;
     notebook(){
-        date.dat = "";
+        date.dat = " ";
     }
 };
 
@@ -46,7 +47,7 @@ long prime_num(long n){
     return n-1;
 }
 
-long prime;
+long prime = 2;
 
 long hash_func(long a, long b, long k, long p, long m){
     return ((a * k + b) % p) % m;
@@ -81,7 +82,9 @@ public:
 
         while(flag){
             initiating();
+            //cout << data_mi.size() << "size" << endl;
             for (long i = 0; i < data_mi.size(); i++){
+                            //cout << "fucking shit" << endl;
                 keyy = key(data_mi[i].date.dat);
                 hashkey = hash_func(a,b,keyy,prime,size_mi);
                 if (hashsi[hashkey].date.dat != " "){
@@ -154,8 +157,8 @@ public:
 };
 
 class first_notebook{
-    long ha, hb, f_size;
     vector<secondary_notebook> buckets;
+    long ha, hb, f_size;
 
 public:
     void initiating(){
@@ -164,6 +167,7 @@ public:
     }
 
     void making(vector<notebook> data){
+        initiating();
         f_size = data.size();
         buckets.resize(f_size);
         vector<vector<notebook>> databuck;
@@ -180,7 +184,14 @@ public:
 
     notebook searching(string name){
         long keyy = key(name);
+        //cout << "ups" << endl;
+        //cout << keyy << "keyy" << endl;
+        //cout << ha << "ha" << endl;
+        //cout << hb << "hb" << endl;
+        //cout << f_size << "f_size" << endl;
+        ///////////
         long hash_key = hash_func(ha,hb,keyy,prime,f_size);
+        //cout << "ups" << endl; ///////////
         return buckets[hash_key].serching_notebook(name);
     }
 };
@@ -196,6 +207,7 @@ public:
     }
 
     void making(vector<event> data){
+        initiating();
         f_size = data.size();
         buckets.resize(f_size);
         vector<vector<event>> databuck;
@@ -217,9 +229,125 @@ public:
     }
 };
 
-int main()
-{
-    vector<long> array1;
+
+
+int menu() {
+        char key=0;
+        int code;
+        do {
+                system("cls");
+                key=(key+3)%3;
+                if (key==0) cout<<"-> Search data."<<endl;
+                        else  cout<<"   Search data."<<endl;
+                if (key==1) cout<<"-> Search event."<<endl;
+                        else  cout<<"   Search event."<<endl;
+                if (key==2) cout<<"-> Exit."<<endl;
+                        else  cout<<"   Exit."<<endl;
+                code=_getch();
+                if (code==224)
+                {
+                    code=_getch();
+                    if (code==80) key++;
+                    if (code==72) key--;
+                        }
+           }while(code!=13);
+        system("cls");
+        return key;
+}
+
+int main(){
+    vector<notebook> v_notebook;
+    vector<event> v_event;
+    first_notebook f_notebook;
+    first_event f_event;
+
+            notebook note;
+            note.date.dat = "12.12.2012";
+            //note.evets = "event11";
+            event eve;
+            eve.datepoint = note.date;
+            eve.name = "event11";
+            eve.place = "KNU";
+            note.evets.push_back(eve);
+            v_notebook.push_back(note);
+            v_event.push_back(eve);
+
+            cout << "KKK" << endl;///////
+
+    f_notebook.making(v_notebook);
+
+    cout << "KKK" << endl; /////////
+
+    f_event.making(v_event);
+
+    long n_notebook = v_notebook.size();
+    long n_event = v_event.size();
+
+    prime = prime_num(max(n_notebook, n_event));
+
+    char c=0;
+    while (c!=4)
+    {
+        c=menu();
+        system("cls");
+        switch (c)
+        {
+            case 0: {
+                string data;
+                //cout << prime << "pri" << endl;
+                cout << "Give me data like dd.mm.yyyy" << endl;
+                cin >> data;
+                notebook ans = f_notebook.searching(data);
+                if (ans.date.dat == " ")
+                    cout << "There is no event" << endl;
+                else{
+                    for (long i = 0; i < ans.evets.size(); i++)
+                        cout << ans.evets[i].name << " in " << ans.evets[i].place << endl;
+                }
+                system("pause");
+                break;
+            }
+            case 1: {
+                string data;
+                cout << "Give me name of event" << endl;
+                cin >> data;
+                event ans = f_event.searching(data);
+                if (ans.name == " ")
+                    cout << "There is no event with this name" << endl;
+                else
+                    cout << ans.datepoint.dat << " in " << ans.place << endl;
+                system("pause");
+                break;
+            }
+            case 2: {
+                return 0;
+            }
+            system("cls");
+        }
+
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+/*int main(){
+
+
+    return 0;
+}*/
+
+
+
+
+
+    /*vector<long> array1;
     array1.resize(4,20);
     copy( array1.begin(),   // итератор начала массива
           array1.end(),     // итератор конца массива
@@ -242,7 +370,4 @@ int main()
     vector<event> events(5);
     for (int i = 0; i < events.size(); i++)
         cout << events[i].name << 'e';
-    cout << endl;
-
-    return 0;
-}
+    cout << endl;*/
