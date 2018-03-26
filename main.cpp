@@ -2,7 +2,6 @@
 #include <vector>
 #include <math.h>
 #include <string>
-#include <list>
 #include <random>
 #include <iterator> //for vector copying
 //https://neerc.ifmo.ru/wiki
@@ -17,11 +16,19 @@ struct event{
     string name;
     string place;
     date datepoint;
+    event(){
+        name = "";
+        place = "";
+        datepoint.dat = "";
+    }
 };
 
 struct notebook{
     date date;
-    list<event> evets;
+    vector<event> evets;
+    notebook(){
+        date.dat = "";
+    }
 };
 
 long prime_num(long n){
@@ -46,7 +53,7 @@ long hash_func(long a, long b, long k, long p, long m){
 }
 
 class secondary_hash{
-    vector<string> hash_si;
+    vector<event> hash_si;
     long size_mi, a, b;
 
 public:
@@ -62,7 +69,7 @@ public:
         return ans;
     }
 
-    void making_notebook(vector<string> data_mi){
+    void making_notebook(vector<event> data_mi){
         size_mi = data_mi.size();
         if (data_mi.empty())
             return;
@@ -70,14 +77,14 @@ public:
         long hashkey, keyy;
         bool flag = true;
         size_mi = size_mi * size_mi;
-        hash_si.resize(size_mi," ");
+        hash_si.resize(size_mi);
 
         while(flag){
             initiating();
             for (long i = 0; i < data_mi.size(); i++){
-                keyy = key(data_mi[i]);
+                keyy = key(data_mi[i].name);
                 hashkey = hash_func(a,b,keyy,prime,size_mi);
-                if (hash_si[hashkey] != " "){
+                if (hash_si[hashkey].name != " "){
                     flag = false;
                     break;
                 }
@@ -111,6 +118,11 @@ int main()
         for (long i = 0; i < data.size(); i++)
             ans += int(data[i]);
     cout << ans << endl;
+
+    vector<event> events(5);
+    for (int i = 0; i < events.size(); i++)
+        cout << events[i].name << 'e';
+    cout << endl;
 
     return 0;
 }
