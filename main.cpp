@@ -54,6 +54,7 @@ long hash_func(long a, long b, long k, long p, long m){
 
 class secondary_hash{
     vector<event> hash_si;
+    vector<notebook> hashsi;
     long size_mi, a, b;
 
 public:
@@ -89,6 +90,31 @@ public:
                     break;
                 }
                 hash_si[hashkey] = data_mi[i];
+            }
+            flag = !flag;
+        }
+    }
+
+    void making_notebook(vector<notebook> data_mi){
+        size_mi = data_mi.size();
+        if (data_mi.empty())
+            return;
+
+        long hashkey, keyy;
+        bool flag = true;
+        size_mi = size_mi * size_mi;
+        hashsi.resize(size_mi);
+
+        while(flag){
+            initiating();
+            for (long i = 0; i < data_mi.size(); i++){
+                keyy = key(data_mi[i].date.dat);
+                hashkey = hash_func(a,b,keyy,prime,size_mi);
+                if (hashsi[hashkey].date.dat != " "){
+                    flag = false;
+                    break;
+                }
+                hashsi[hashkey] = data_mi[i];
             }
             flag = !flag;
         }
