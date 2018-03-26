@@ -120,7 +120,47 @@ public:
         }
     }
 
-    ///////
+    event searching_event(string data){
+        event ans;
+        if (size_mi == 0)
+            return ans;
+        long keyy = key(data);
+        long hash_key = hash_func(a,b,keyy,prime,size_mi);
+        if (hash_si[hash_key].name == data)
+            return hash_si[hash_key];
+        return ans;
+    }
+
+    notebook serching_notebook(string data){
+        notebook ans;
+        if (size_mi == 0)
+            return ans;
+        long keyy = key(data);
+        long hash_key = hash_func(a,b,keyy,prime,size_mi);
+        if (hashsi[hash_key].date.dat == data)
+            return hashsi[hash_key];
+        return ans;
+    }
+};
+
+class first_hash{
+    long ha, hb;
+    //vector<secondary_hash> backets(numb);
+
+public:
+    void initiating(){
+        ha = rand() % (prime - 1) +1;
+        hb = rand() % prime;
+    }
+
+    long key(string data){
+        long ans = 0;
+        for (long i = 0; i < data.size(); i++)
+            ans += long(data[i]);
+        return ans;
+    }
+
+
 };
 
 int main()
