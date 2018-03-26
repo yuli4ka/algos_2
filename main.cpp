@@ -46,14 +46,20 @@ long prime_num(long n){
     return n-1;
 }
 
-long prime, numb = 0;
+long prime;
 
 long hash_func(long a, long b, long k, long p, long m){
     return ((a * k + b) % p) % m;
 }
 
-class secondary_hash{
-    vector<event> hash_si;
+long key(string data){
+        long ans = 0;
+        for (long i = 0; i < data.size(); i++)
+            ans += long(data[i]);
+        return ans;
+    }
+
+class secondary_notebook{
     vector<notebook> hashsi;
     long size_mi, a, b;
 
@@ -61,38 +67,6 @@ public:
     void initiating(){
         a = rand() % (prime - 1) +1;
         b = rand() % prime;
-    }
-    ///////
-    long key(string data){
-        long ans = 0;
-        for (long i = 0; i < data.size(); i++)
-            ans += long(data[i]);
-        return ans;
-    }
-
-    void making_notebook(vector<event> data_mi){
-        size_mi = data_mi.size();
-        if (data_mi.empty())
-            return;
-
-        long hashkey, keyy;
-        bool flag = true;
-        size_mi = size_mi * size_mi;
-        hash_si.resize(size_mi);
-
-        while(flag){
-            initiating();
-            for (long i = 0; i < data_mi.size(); i++){
-                keyy = key(data_mi[i].name);
-                hashkey = hash_func(a,b,keyy,prime,size_mi);
-                if (hash_si[hashkey].name != " "){
-                    flag = false;
-                    break;
-                }
-                hash_si[hashkey] = data_mi[i];
-            }
-            flag = !flag;
-        }
     }
 
     void making_notebook(vector<notebook> data_mi){
@@ -120,17 +94,6 @@ public:
         }
     }
 
-    event searching_event(string data){
-        event ans;
-        if (size_mi == 0)
-            return ans;
-        long keyy = key(data);
-        long hash_key = hash_func(a,b,keyy,prime,size_mi);
-        if (hash_si[hash_key].name == data)
-            return hash_si[hash_key];
-        return ans;
-    }
-
     notebook serching_notebook(string data){
         notebook ans;
         if (size_mi == 0)
@@ -143,9 +106,56 @@ public:
     }
 };
 
-class first_hash{
-    long ha, hb;
-    //vector<secondary_hash> backets(numb);
+class secondary_event{
+    vector<event> hash_si;
+    long size_mi, a, b;
+
+public:
+    void initiating(){
+        a = rand() % (prime - 1) +1;
+        b = rand() % prime;
+    }
+
+    void making_event(vector<event> data_mi){
+        size_mi = data_mi.size();
+        if (data_mi.empty())
+            return;
+
+        long hashkey, keyy;
+        bool flag = true;
+        size_mi = size_mi * size_mi;
+        hash_si.resize(size_mi);
+
+        while(flag){
+            initiating();
+            for (long i = 0; i < data_mi.size(); i++){
+                keyy = key(data_mi[i].name);
+                hashkey = hash_func(a,b,keyy,prime,size_mi);
+                if (hash_si[hashkey].name != " "){
+                    flag = false;
+                    break;
+                }
+                hash_si[hashkey] = data_mi[i];
+            }
+            flag = !flag;
+        }
+    }
+
+    event searching_event(string data){
+        event ans;
+        if (size_mi == 0)
+            return ans;
+        long keyy = key(data);
+        long hash_key = hash_func(a,b,keyy,prime,size_mi);
+        if (hash_si[hash_key].name == data)
+            return hash_si[hash_key];
+        return ans;
+    }
+};
+
+class first_notebook{
+    long ha, hb, f_size;
+    vector<secondary_notebook> buckets;
 
 public:
     void initiating(){
@@ -153,14 +163,58 @@ public:
         hb = rand() % prime;
     }
 
-    long key(string data){
-        long ans = 0;
-        for (long i = 0; i < data.size(); i++)
-            ans += long(data[i]);
-        return ans;
+    void making(vector<notebook> data){
+        f_size = data.size();
+        buckets.resize(f_size);
+        vector<vector<notebook>> databuck;
+        databuck.resize(f_size);
+        long keyy, hash_key;
+        for (long i = 0; i < f_size; i++){
+            keyy = key(data[i].date.dat);
+            hash_key = hash_func(ha,hb,keyy,prime,f_size);
+            databuck[hash_key].push_back(data[i]);
+        }
+        for (long i = 0; i < f_size; i++)
+            buckets[i].making_notebook(databuck[i]);
     }
 
+    notebook searching(string name){
+        long keyy = key(name);
+        long hash_key = hash_func(ha,hb,keyy,prime,f_size);
+        return buckets[hash_key].serching_notebook(name);
+    }
+};
 
+class first_event{
+    long ha, hb, f_size;
+    vector<secondary_event> buckets;
+
+public:
+    void initiating(){
+        ha = rand() % (prime - 1) +1;
+        hb = rand() % prime;
+    }
+
+    void making(vector<event> data){
+        f_size = data.size();
+        buckets.resize(f_size);
+        vector<vector<event>> databuck;
+        databuck.resize(f_size);
+        long keyy, hash_key;
+        for (long i = 0; i < f_size; i++){
+            keyy = key(data[i].name);
+            hash_key = hash_func(ha,hb,keyy,prime,f_size);
+            databuck[hash_key].push_back(data[i]);
+        }
+        for (long i = 0; i < f_size; i++)
+            buckets[i].making_event(databuck[i]);
+    }
+
+    event searching(string name){
+        long keyy = key(name);
+        long hash_key = hash_func(ha,hb,keyy,prime,f_size);
+        return buckets[hash_key].searching_event(name);
+    }
 };
 
 int main()
