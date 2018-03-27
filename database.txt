@@ -25,9 +25,9 @@ teatime
 dormitory
 //
 01.04.2018
-cleaning
+cleaning_room
 dormitory
-caketime
+timing
 dormitory
 //
 02.04.2018
@@ -41,7 +41,8 @@ somewhere
 04.04.2018
 booking
 site
-meeting
+meeting_friend
 city_center
-making_something
+making_sth
 somewhere
+//
