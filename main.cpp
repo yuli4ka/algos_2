@@ -3,21 +3,66 @@
 #include <string>
 using namespace std;
 
-class RedBlackTree
+//hh:mm dd.mm.yyyy
+struct date{
+    string dat;
+    date(){
+        dat = " ";
+    }
+};
+
+struct event{
+    string name;
+    string place;
+    date datepoint;
+    event(){
+        name = " ";
+        place = " ";
+        datepoint.dat = " ";
+    }
+};
+
+struct notebook{
+    date date;
+    vector<event> evets;
+    notebook(){
+        date.dat = " ";
+    }
+public:
+    void n_new(string d_new){
+        date.dat = d_new;
+    }
+};
+
+bool operator > (notebook a, notebook b){
+    if (a.date.dat > b.date.dat)
+        return true;
+    else
+        return false;
+}
+
+bool operator != (notebook a, notebook b){
+    if (a.date.dat != b.date.dat)
+        return true;
+    else
+        return false;
+}
+
+class SizeRedBlackTree
 {
 public:
 	enum nodeColor {RED, BLACK};
 	struct Node
 	{
 		//int data;;
-		string data;
+		notebook data;
 		Node *parent;
 		Node *right;
 		Node *left;
 		nodeColor color;
 		int size;
 	};
-	RedBlackTree()
+	SizeRedBlackTree()
 	{
 		NIL = new Node;
 		NIL->right = NIL;
@@ -28,9 +73,9 @@ public:
 		root = NIL;
 
 	}
-	void insertNode(string);
+	void insertNode(notebook);
 	void insertFixup(Node *);
-	void deleteNode(string);
+	void deleteNode(notebook);
 	void deleteTransplant(Node *, Node *);
 	void deleteFixup(Node *);
 	void leftRotate(Node *);
@@ -44,22 +89,32 @@ private:
 
 int main()
 {
-	RedBlackTree rbt;
-	rbt.insertNode("5");
-	rbt.insertNode("2");
-	rbt.insertNode("3");
-	rbt.insertNode("7");
-	rbt.insertNode("4");
-	rbt.insertNode("9");
-	rbt.insertNode("0");
-	rbt.insertNode("6");
-	rbt.deleteNode("2");
+	SizeRedBlackTree rbt;
+	notebook note;
+	note.n_new("5");
+	rbt.insertNode(note);
+	note.n_new("2");
+	rbt.insertNode(note);
+	note.n_new("3");
+	rbt.insertNode(note);
+	note.n_new("7");
+	rbt.insertNode(note);
+	note.n_new("4");
+	rbt.insertNode(note);
+	note.n_new("9");
+	rbt.insertNode(note);
+	note.n_new("0");
+	rbt.insertNode(note);
+	note.n_new("6");
+	rbt.insertNode(note);
+	note.n_new("2");
+	rbt.deleteNode(note);
 	rbt.print();
 
 	return 0;
 }
 
-void RedBlackTree::insertNode(string data)
+void SizeRedBlackTree::insertNode(notebook data)
 {
 	Node *curr = root;
 	Node *parent = NULL;
@@ -106,7 +161,7 @@ void RedBlackTree::insertNode(string data)
 
 }
 
-void RedBlackTree::insertFixup(Node * node)
+void SizeRedBlackTree::insertFixup(Node * node)
 {
 	while (node != root && node->parent->color == RED)
 	{
@@ -162,41 +217,29 @@ void RedBlackTree::insertFixup(Node * node)
 	root->color = BLACK;
 }
 
-void RedBlackTree::leftRotate(Node *node)
+void SizeRedBlackTree::leftRotate(Node *node)
 {
-	Node *rn = node->right;
-	node->right = rn->left;
-
-	if (rn->left != NIL)
-	{
-		rn->left->parent = node;
-	}
-
-	rn->parent = node->parent;
-
+	Node *pilot = node->right;
+	node->right = pilot->left;
+	if (pilot->left != NIL)
+		pilot->left->parent = node;
+	pilot->parent = node->parent;
 	if (node->parent)
 	{
 		if (node == node->parent->left)
-		{
-			node->parent->left = rn;
-		}
+			node->parent->left = pilot;
 		else
-		{
-			node->parent->right = rn;
-		}
+			node->parent->right = pilot;
 	}
 	else
-	{
-		root = rn;
-	}
-	rn->left = node;
-	node->parent = rn;
-
+		root = pilot;
+	pilot->left = node;
+	node->parent = pilot;
 	node->size = node->left->size + node->right->size + 1;
-	rn->size = rn->left->size + rn->right->size + 1;
+	pilot->size = pilot->left->size + pilot->right->size + 1;
 }
 
-void RedBlackTree::rightRotate(Node *node)
+void SizeRedBlackTree::rightRotate(Node *node)
 {
 	Node *ln = node->left;
 
@@ -233,7 +276,7 @@ void RedBlackTree::rightRotate(Node *node)
 }
 
 
-void RedBlackTree::deleteTransplant(Node *u, Node *v)
+void SizeRedBlackTree::deleteTransplant(Node *u, Node *v)
 {
 	if (!u->parent)
 	{
@@ -250,7 +293,7 @@ void RedBlackTree::deleteTransplant(Node *u, Node *v)
 	u->parent = v->parent;
 }
 
-void RedBlackTree::deleteNode(string data)
+void SizeRedBlackTree::deleteNode(notebook data)
 {
 	Node *curr = root;
 	Node *parent = NULL;
@@ -332,7 +375,7 @@ void RedBlackTree::deleteNode(string data)
 	delete curr;
 }
 
-void RedBlackTree::deleteFixup(Node *node)
+void SizeRedBlackTree::deleteFixup(Node *node)
 {
 	Node *uncle;
 	while (node != root && node->color == BLACK)
@@ -401,7 +444,7 @@ void RedBlackTree::deleteFixup(Node *node)
 
 }
 
-void RedBlackTree::print()
+void SizeRedBlackTree::print()
 {
 	Node *curr;
 	queue<Node*> tree;
@@ -432,7 +475,7 @@ void RedBlackTree::print()
 			continue;
 		}
 
-		cout << "Data: " << curr->data << ". Color: ";
+		cout << "Data: " << curr->data.date.dat << ". Color: ";
 		if (curr->color == RED)
 		{
 			cout << "RED.";
@@ -450,7 +493,7 @@ void RedBlackTree::print()
 
 }
 
-RedBlackTree::Node *RedBlackTree::select(Node *node, int selec)
+SizeRedBlackTree::Node *SizeRedBlackTree::select(Node *node, int selec)
 {
 	int rank = node->left->size + 1;
 	if (selec == rank)
