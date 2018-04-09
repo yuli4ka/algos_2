@@ -29,7 +29,7 @@ namespace spaceRed_Black_Tree{
 			this->main_root = nil;
 		}
 
-		Red_Black_Tree(const Red_Black_Tree &obj){
+		/*Red_Black_Tree(const Red_Black_Tree &obj){
 			nil = new TreeNode();
 			nil->red = false;
 			nil->left = nil;
@@ -43,7 +43,7 @@ namespace spaceRed_Black_Tree{
 				this->main_root->parent = this->nil;
 				copy(this->main_root, obj.main_root, obj.nil);
 			}
-		}
+		}*/
 		~Red_Black_Tree(){
 			clear(this->main_root);
 			delete nil;
@@ -51,7 +51,7 @@ namespace spaceRed_Black_Tree{
 			this->nil = nullptr;
 		}
 
-		Red_Black_Tree& operator=(const Red_Black_Tree &obj){
+		/*Red_Black_Tree& operator=(const Red_Black_Tree &obj){
 			clear(this->main_root);
 			if (obj.main_root == obj.nil)
 				this->main_root = this->nil;
@@ -61,7 +61,7 @@ namespace spaceRed_Black_Tree{
 				copy(this->main_root, obj.main_root, obj.nil);
 			}
 			return *this;
-		}
+		}*/
 
 		bool Insert(T data){
 			if (this->main_root == nil){
@@ -72,9 +72,12 @@ namespace spaceRed_Black_Tree{
 			TreeNode *p = this->main_root, *current = nullptr;
 			while (p != nil){
 				current = p;
-				if (p->data < data) p = p->right;
-				else if (p->data > data) p = p->left;
-				else return true;
+				if (p->data < data)
+                    p = p->right;
+				else if (p->data > data)
+                    p = p->left;
+				else
+                    return true;
 			}
 			/////
 			p = current;

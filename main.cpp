@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <conio.h>
 #include "Red_Black_Tree.h"
 using namespace std;
 
@@ -57,7 +58,31 @@ bool operator == (notebook a, notebook b){
     else
         return false;
 }
-
+//
+int menu() {
+        char key=0;
+        int code;
+        do {
+                system("cls");
+                key=(key+3)%3;
+                if (key==0) cout<<"-> Search data."<<endl;
+                        else  cout<<"   Search data."<<endl;
+                if (key==1) cout<<"-> Print tree."<<endl;
+                        else  cout<<"   Print tree."<<endl;
+                if (key==2) cout<<"-> Exit."<<endl;
+                        else  cout<<"   Exit."<<endl;
+                code=_getch();
+                if (code==224)
+                {
+                    code=_getch();
+                    if (code==80) key++;
+                    if (code==72) key--;
+                        }
+           }while(code!=13);
+        system("cls");
+        return key;
+}
+//
 int main()
 {
 	spaceRed_Black_Tree::Red_Black_Tree<notebook> tree;
