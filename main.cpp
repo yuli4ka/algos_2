@@ -59,6 +59,36 @@ bool operator == (notebook a, notebook b){
         return false;
 }
 
+//
+bool operator > (event a, event b){
+    if (a.name > b.name)
+        return true;
+    else
+        return false;
+}
+
+bool operator < (event a, event b){
+    if (a.name < b.name)
+        return true;
+    else
+        return false;
+}
+
+bool operator != (event a, event b){
+    if (a.name != b.name)
+        return true;
+    else
+        return false;
+}
+
+bool operator == (event a, event b){
+    if (a.name == b.name)
+        return true;
+    else
+        return false;
+}
+//
+
 ostream& operator<<(ostream& os, const notebook& dt)
 {
     os << dt.date.dat;
@@ -85,6 +115,13 @@ istream& operator>>(istream& is, notebook& dt)
         new_event.datepoint = dt.date;
         getline(is,temp);
     }
+    return is;
+}
+
+istream& operator>>(istream& is, event& dt)
+{
+    getline(is,dt.name);
+    getline(is,dt.place);
     return is;
 }
 
@@ -127,6 +164,8 @@ int menu() {
 //
 int main()
 {
+    spaceRed_Black_Tree::Red_Black_Tree<notebook> n_tree;
+    spaceRed_Black_Tree::Red_Black_Tree<event> e_tree;
     char c=0;
     while (c!=9)
     {
@@ -138,18 +177,80 @@ int main()
                 notebook data;
                 cout << "Give me date and events (1st word == event, 2nd word == place of event, '//' == end" << endl;
                 cin >> data;
-
-                cout << data << endl;
-                if (data.evets.empty())
-                    cout << "There is not event" << endl;
-                else
-                    cout << data.evets[0] << endl;
-
+                n_tree.Insert(data);
+                for (int i = 0; i < data.evets.size(); i++)
+                    e_tree.Insert(data.evets[i]);
                 system("pause");
                 break;
             }
             case 1: {
-                //rbt.print(rbt.root,0);
+                event data;
+                cout << "Give me event and date for this event" << endl;
+                cin >> data;
+                e_tree.Insert(data);
+                notebook note;
+                cin >> note.date.dat;
+                int Rank = n_tree.GetRank(note);
+                if (Rank == 0){
+                    note.evets.push_back(data);
+                    n_tree.Insert(note);
+                }
+                else{
+                    note = n_tree.FindByIndex(Rank);
+                    n_tree.Delete(note);
+                    note.evets.push_back(data);
+                    n_tree.Insert(note);
+                }
+                break;
+            }
+            case 2:{
+                cout << "Give me date for deleting" << endl;
+                notebook note;
+                cin >> note.date.dat;
+                int Rank = n_tree.GetRank(note);
+                if (Rank != 0){
+                    note = n_tree.FindByIndex(Rank);
+                    for (int i = 0; i < note.evets.size(); i++)
+                        e_tree.Delete(note.evets[i]);
+                    n_tree.Delete(note);
+                }
+                break;
+            }
+            case 3:{
+                cout << "Give me name of event for deleting" << endl;
+                event data;
+                cin >> data.name;
+                if (e_tree.Delete(data)){
+                    notebook note;
+                    note.date.dat = data.datepoint.dat;
+                    int Rank = n_tree.GetRank(note);
+                    if (Rank != 0){
+                        note = n_tree.FindByIndex(Rank);
+                        n_tree.Delete(note);
+                        for (int i = 0; i < note.evets.size(); i++)
+                            if (note.evets[i] == data)
+                                note.evets.erase(note.evets.begin()+i);
+                        n_tree.Insert(note);
+                    }
+                }
+                break;
+            }
+            case 4:{
+                cout << "Give me date for getting rank" << endl;
+                notebook note;
+                cin >> note.date.dat;
+                n_tree.GetRank(note);
+                cout << n_tree.GetRank(note);
+                system("Pause");
+                break;
+            }
+            case 5:{
+                cout << "Give me name of event for getting rank" << endl;
+                event data;
+                cin >> data.name;
+                cout << e_tree.GetRank(data);
+                system("Pause");
+                break;
             }
             case 8: {
                 return 0;
@@ -158,38 +259,6 @@ int main()
         }
 
     }
-	spaceRed_Black_Tree::Red_Black_Tree<notebook> tree;
-	notebook data1;
-	data1.date.dat = "sfd";
-	cout << data1 << endl;
-	notebook data2;
-	notebook data3;
-	notebook data4;
-
-	event dat1;
-	dat1.name = "zz";
-	dat1.place = "cc";
-	dat1.datepoint = data1.date;
-	cout << dat1 << endl;
-
-	tree.Insert(data1);
-	tree.Insert(data2);
-	tree.Insert(data3);
-	tree.Insert(data4);
-	/*tree.Insert(2);
-	tree.Insert(3);
-	tree.Insert(4);
-	tree.Insert(5);
-	tree.Insert(6);
-	tree.Insert(7);
-
-	tree.Delete(4);
-
-	for (size_t i = 1; i < 8; i++)
-	{
-		cout << tree.GetRank(i) << endl;
-	}
-*/
 	system("pause");
 	return 0;
 }
