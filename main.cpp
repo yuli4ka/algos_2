@@ -185,11 +185,14 @@ int main()
             }
             case 1: {
                 event data;
-                cout << "Give me event and date for this event" << endl;
-                cin >> data;
-                e_tree.Insert(data);
+                cout << "Give me event and date for this event";
+                //cin >> data;
+                    getline(cin,data.name,'\n');
+                    getline(cin,data.place,'\n');
+                //don`t wanna read name on second time
                 notebook note;
                 cin >> note.date.dat;
+                e_tree.Insert(data);
                 int Rank = n_tree.GetRank(note);
                 if (Rank == 0){
                     note.evets.push_back(data);
@@ -203,7 +206,7 @@ int main()
                 }
                 break;
             }
-            case 2:{
+            case 2: {
                 cout << "Give me date for deleting" << endl;
                 notebook note;
                 cin >> note.date.dat;
@@ -216,7 +219,7 @@ int main()
                 }
                 break;
             }
-            case 3:{
+            case 3: {
                 cout << "Give me name of event for deleting" << endl;
                 event data;
                 cin >> data.name;
@@ -235,7 +238,7 @@ int main()
                 }
                 break;
             }
-            case 4:{
+            case 4: {
                 cout << "Give me date for getting rank" << endl;
                 notebook note;
                 cin >> note.date.dat;
@@ -244,11 +247,21 @@ int main()
                 system("Pause");
                 break;
             }
-            case 5:{
+            case 5: {
                 cout << "Give me name of event for getting rank" << endl;
                 event data;
                 cin >> data.name;
                 cout << e_tree.GetRank(data);
+                system("Pause");
+                break;
+            }
+            case 6: {
+                n_tree.print(n_tree.main_root,0);
+                system("Pause");
+                break;
+            }
+            case 7: {
+                e_tree.print(e_tree.main_root,0);
                 system("Pause");
                 break;
             }

@@ -16,9 +16,10 @@ namespace spaceRed_Black_Tree{
 			TreeNode(T _data, TreeNode * _parent, TreeNode *nil) : data(_data), red(true), size(1), parent(_parent), left(nil), right(nil) {}
 		};
 
-		TreeNode *main_root;
+		//
 		TreeNode *nil;
 	public:
+	    TreeNode *main_root;
 		Red_Black_Tree(){
 			nil = new TreeNode();
 			nil->red = false;
@@ -441,6 +442,20 @@ namespace spaceRed_Black_Tree{
 			}
 			return 0;
 		}
+
+		void print(TreeNode *p, int level){
+		    if (p == nil){
+                for(int i = 0; i < level; i++)
+                    std::cout<<"\t";
+                std::cout <<"NIL"<<'\n';
+                return;
+		    }
+            print(p->right, level+1);
+            for(int i = 0; i < level; i++)
+                std::cout<<"\t";
+            std::cout<< p->data <<'\n';
+            print(p->left, level+1);
+        }
 
 	private:
 		size_t getRank(TreeNode *node){
