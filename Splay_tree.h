@@ -107,6 +107,7 @@ public:
 		Red_Black_Tree(){
 			main_root = NULL;
 		}
+
     node *removing(node *vert, T key){
         vert = finding(vert, key);
         set_parent(vert->left, NULL);

@@ -194,7 +194,7 @@ int main()
                 getline(cin,data.place,'\n');
                 notebook note;
                 getline(cin, note.date.dat,'\n');
-                if(n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key != note){
+                if(n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key.date.dat != note.date.dat){
                     note.evets.push_back(data);
                     data.datepoint.dat = note.date.dat;
                     n_tree.inserting(n_tree.main_root,note);
@@ -210,12 +210,16 @@ int main()
                 notebook note;
                 cin >> note.date.dat;
                 if (n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key.date.dat != note.date.dat){
-                    cout << "We don't have this date in database";
+                    cout << "We don't have this date in database" << endl;
                     system("pause");
                 }
                 else{
-                    for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
-                        e_tree.removing(e_tree.main_root,note.evets[i]);
+                    for (int i = 0; i < n_tree.main_root->key.evets.size(); i++){
+                            cout << "here" << endl;
+                        //if (e_tree.finding(e_tree.main_root,n_tree.main_root->key.evets[i]))
+                            e_tree.removing(e_tree.main_root,n_tree.main_root->key.evets[i]);
+                    }
+                    cout << "here out" << endl;
                     n_tree.removing(n_tree.main_root,note);
                 }
                 break;
@@ -235,7 +239,7 @@ int main()
                     e_tree.removing(e_tree.main_root,data);
                 }
                 else {
-                    cout << "We don't have this event in database";
+                    cout << "We don't have this event in database" << endl;
                     system("pause");
                 }
                 break;
@@ -245,7 +249,7 @@ int main()
                 notebook note;
                 cin >> note.date.dat;
                 if (n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key.date.dat != note.date.dat)
-                    cout << "We don't have this date in database";
+                    cout << "We don't have this date in database" << endl;
                 else{
                     cout << n_tree.main_root->key << endl;
                     for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
@@ -259,7 +263,7 @@ int main()
                 event data;
                 cin >> data.name;
                 if (e_tree.finding(e_tree.main_root,data) == NULL || e_tree.main_root->key.name != data.name)
-                    cout << "We don't have this event in database";
+                    cout << "We don't have this event in database" << endl;
                 else{
                     cout << e_tree.main_root->key << endl;
                     //cout << e_tree.main_root->key.datepoint.dat << endl;
