@@ -113,8 +113,8 @@ istream& operator>>(istream& is, notebook& dt)
         new_event.name = temp;
         getline(is,temp);
         new_event.place = temp;
-        dt.evets.push_back(new_event);
         new_event.datepoint = dt.date;
+        dt.evets.push_back(new_event);
         getline(is,temp);
     }
     return is;
@@ -146,10 +146,10 @@ int menu() {
                         else  cout<<"   Find date."<<endl;
                 if (key==5) cout<<"-> Find event."<<endl;
                         else  cout<<"   Find event."<<endl;
-                if (key==6) cout<<"-> Find date."<<endl;
-                        else  cout<<"   Find date."<<endl;
-                if (key==7) cout<<"-> Print tree event."<<endl;
-                        else  cout<<"   Print tree event."<<endl;
+                if (key==6) cout<<"-> Print date."<<endl;
+                        else  cout<<"   Print date."<<endl;
+                if (key==7) cout<<"-> Print event."<<endl;
+                        else  cout<<"   Print event."<<endl;
                 if (key==8) cout<<"-> Exit."<<endl;
                         else  cout<<"   Exit."<<endl;
                 code=_getch();
@@ -168,6 +168,7 @@ int main()
 {
     splay_tree<notebook> n_tree;
     splay_tree<event> e_tree;
+    e_tree.main_root = NULL;
     char c=0;
     while (c!=9)
     {
@@ -188,33 +189,27 @@ int main()
             case 1: {
                 event data;
                 cout << "Give me event and date for this event" << endl;
-                //cin >> data;
                 cin.clear();
                 getline(cin,data.name,'\n');
                 getline(cin,data.place,'\n');
-                //don`t wanna read name on second time
                 notebook note;
                 getline(cin, note.date.dat,'\n');
-                e_tree.inserting(e_tree.main_root,data);
-                //should I print "if-else?"
-                if(n_tree.finding(n_tree.main_root,note) == NULL){
+                if(n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key != note){
                     note.evets.push_back(data);
+                    data.datepoint.dat = note.date.dat;
                     n_tree.inserting(n_tree.main_root,note);
                 }
                 else{
-                    /*n_tree.removing(n_tree.main_root,note);
-                    note.evets.push_back(data);
-                    n_tree.inserting(n_tree.main_root,note);*/
                     n_tree.main_root->key.evets.push_back(data);
                 }
-                //
+                e_tree.inserting(e_tree.main_root,data);
                 break;
             }
             case 2: {
                 cout << "Give me date for deleting" << endl;
                 notebook note;
                 cin >> note.date.dat;
-                if (n_tree.finding(n_tree.main_root,note) == NULL){
+                if (n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key.date.dat != note.date.dat){
                     cout << "We don't have this date in database";
                     system("pause");
                 }
@@ -229,15 +224,10 @@ int main()
                 cout << "Give me name of event for deleting" << endl;
                 event data;
                 cin >> data.name;
-                if (e_tree.finding(e_tree.main_root,data) != NULL){
+                if (e_tree.finding(e_tree.main_root,data) != NULL && e_tree.main_root->key == data){
                     notebook note;
                     note.date.dat = data.datepoint.dat;
-                    if (n_tree.finding(n_tree.main_root,note) != NULL){
-                        /*n_tree.removing(n_tree.main_root,note);
-                        for (int i = 0; i < note.evets.size(); i++)
-                            if (note.evets[i] == data)
-                                note.evets.erase(note.evets.begin()+i);
-                        n_tree.Insert(note);*/
+                    if (n_tree.finding(n_tree.main_root,note) != NULL && n_tree.main_root->key == note){
                         for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
                             if (n_tree.main_root->key.evets[i] == data)
                                 n_tree.main_root->key.evets.erase(n_tree.main_root->key.evets.begin()+i);
@@ -254,7 +244,7 @@ int main()
                 cout << "Give me date for finding" << endl;
                 notebook note;
                 cin >> note.date.dat;
-                if (n_tree.finding(n_tree.main_root,note) == NULL)
+                if (n_tree.finding(n_tree.main_root,note) == NULL || n_tree.main_root->key.date.dat != note.date.dat)
                     cout << "We don't have this date in database";
                 else{
                     cout << n_tree.main_root->key << endl;
@@ -268,11 +258,11 @@ int main()
                 cout << "Give me name of event for finding" << endl;
                 event data;
                 cin >> data.name;
-                if (e_tree.finding(e_tree.main_root,data) == NULL)
+                if (e_tree.finding(e_tree.main_root,data) == NULL || e_tree.main_root->key.name != data.name)
                     cout << "We don't have this event in database";
                 else{
                     cout << e_tree.main_root->key << endl;
-                    cout << e_tree.main_root->key.datepoint.dat << endl;
+                    //cout << e_tree.main_root->key.datepoint.dat << endl;
                 }
                 system("Pause");
                 break;

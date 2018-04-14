@@ -41,11 +41,14 @@ class splay_tree{
 
     node *splay(node *vert){
         node *parent = vert->parent;
-        if (parent == NULL)
+        if (parent == NULL){
+            main_root = vert;
             return vert;
+        }
         node *gparent = parent->parent;
         if (gparent == NULL){
             rotating(parent, vert);
+            main_root = vert;
             return vert;
         }
         if (gparent->left == parent && parent->left == vert){  //zig-zig
@@ -56,6 +59,7 @@ class splay_tree{
             rotating(parent, vert);
             rotating(gparent, vert);
         }
+        main_root = vert;
         return splay(vert);
     }
 
@@ -101,7 +105,7 @@ class splay_tree{
 public:
     node *main_root;
 		Red_Black_Tree(){
-			this->main_root = NULL;
+			main_root = NULL;
 		}
     node *removing(node *vert, T key){
         vert = finding(vert, key);
@@ -111,9 +115,14 @@ public:
     }
 
     node *inserting(node *vert, T key){
-        node *left, *right;
+        node *left = new node, *right = new node;
         spliting(vert, key, left, right);
-        keep_parent(vert);
+        node *new_node = new node;
+        new_node->left = left;
+        new_node->right = right;
+        new_node->key = key;
+        main_root = new_node;
+        keep_parent(new_node);
         return vert;
     }
 
