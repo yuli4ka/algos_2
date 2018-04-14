@@ -59,7 +59,6 @@ class splay_tree{
             rotating(parent, vert);
             rotating(gparent, vert);
         }
-        main_root = vert;
         return splay(vert);
     }
 
@@ -93,13 +92,18 @@ class splay_tree{
     }
 
     node *merging(node *left, node *right){
-        if (right == NULL)
+        if (right == NULL){
+            main_root = left;
             return left;
-        if (left == NULL)
+        }
+        if (left == NULL){
+            main_root = right;
             return right;
+        }
         right = finding (right, left->key);
         right->left = left;
         left->parent = right;
+        main_root = right;
         return right;
     }
 public:
@@ -110,6 +114,8 @@ public:
 
     node *removing(node *vert, T key){
         vert = finding(vert, key);
+        if (vert == NULL)
+            return NULL; ///////
         set_parent(vert->left, NULL);
         set_parent(vert->right, NULL);
         return merging(vert->left, vert->right);
