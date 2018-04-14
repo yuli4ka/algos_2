@@ -179,9 +179,9 @@ int main()
                 notebook data;
                 cout << "Give me date and events (1st word == event, 2nd word == place of event, '//' == end" << endl;
                 cin >> data;
-                n_tree.inserting(data);
+                n_tree.inserting(n_tree.main_root,data);
                 for (int i = 0; i < data.evets.size(); i++)
-                    e_tree.inserting(data.evets[i]);
+                    e_tree.inserting(e_tree.main_root,data.evets[i]);
                 system("pause");
                 break;
             }
@@ -195,30 +195,33 @@ int main()
                 //don`t wanna read name on second time
                 notebook note;
                 getline(cin, note.date.dat,'\n');
-                e_tree.inserting(data);
-                int Rank = n_tree.GetRank(note);
-                if (Rank == 0){
+                e_tree.inserting(e_tree.main_root,data);
+                //should I print "if-else?"
+                if(n_tree.finding(n_tree.main_root,note) == NULL){
                     note.evets.push_back(data);
-                    n_tree.inserting(note);
+                    n_tree.inserting(n_tree.main_root,note);
                 }
                 else{
-                    note = n_tree.FindByIndex(Rank);
-                    n_tree.Delete(note);
+                    /*n_tree.removing(n_tree.main_root,note);
                     note.evets.push_back(data);
-                    n_tree.inserting(note);
+                    n_tree.inserting(n_tree.main_root,note);*/
+                    n_tree.main_root->key.evets.push_back(data);
                 }
+                //
                 break;
             }
             case 2: {
                 cout << "Give me date for deleting" << endl;
                 notebook note;
                 cin >> note.date.dat;
-                int Rank = n_tree.GetRank(note);
-                if (Rank != 0){
-                    note = n_tree.FindByIndex(Rank);
-                    for (int i = 0; i < note.evets.size(); i++)
-                        e_tree.Delete(note.evets[i]);
-                    n_tree.Delete(note);
+                if (n_tree.finding(n_tree.main_root,note) == NULL){
+                    cout << "We don't have this date in database";
+                    system("pause");
+                }
+                else{
+                    for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
+                        e_tree.removing(e_tree.main_root,note.evets[i]);
+                    n_tree.removing(n_tree.main_root,note);
                 }
                 break;
             }
@@ -226,18 +229,24 @@ int main()
                 cout << "Give me name of event for deleting" << endl;
                 event data;
                 cin >> data.name;
-                if (e_tree.Delete(data)){
+                if (e_tree.finding(e_tree.main_root,data) != NULL){
                     notebook note;
                     note.date.dat = data.datepoint.dat;
-                    int Rank = n_tree.GetRank(note);
-                    if (Rank != 0){
-                        note = n_tree.FindByIndex(Rank);
-                        n_tree.Delete(note);
+                    if (n_tree.finding(n_tree.main_root,note) != NULL){
+                        /*n_tree.removing(n_tree.main_root,note);
                         for (int i = 0; i < note.evets.size(); i++)
                             if (note.evets[i] == data)
                                 note.evets.erase(note.evets.begin()+i);
-                        n_tree.Insert(note);
+                        n_tree.Insert(note);*/
+                        for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
+                            if (n_tree.main_root->key.evets[i] == data)
+                                n_tree.main_root->key.evets.erase(n_tree.main_root->key.evets.begin()+i);
                     }
+                    e_tree.removing(e_tree.main_root,data);
+                }
+                else {
+                    cout << "We don't have this event in database";
+                    system("pause");
                 }
                 break;
             }
@@ -245,8 +254,13 @@ int main()
                 cout << "Give me date for finding" << endl;
                 notebook note;
                 cin >> note.date.dat;
-                n_tree.GetRank(note);
-                cout << n_tree.GetRank(note);
+                if (n_tree.finding(n_tree.main_root,note) == NULL)
+                    cout << "We don't have this date in database";
+                else{
+                    cout << n_tree.main_root->key << endl;
+                    for (int i = 0; i < n_tree.main_root->key.evets.size(); i++)
+                        cout << n_tree.main_root->key.evets[i] << endl;
+                }
                 system("Pause");
                 break;
             }
@@ -254,7 +268,12 @@ int main()
                 cout << "Give me name of event for finding" << endl;
                 event data;
                 cin >> data.name;
-                cout << e_tree.GetRank(data);
+                if (e_tree.finding(e_tree.main_root,data) == NULL)
+                    cout << "We don't have this event in database";
+                else{
+                    cout << e_tree.main_root->key << endl;
+                    cout << e_tree.main_root->key.datepoint.dat << endl;
+                }
                 system("Pause");
                 break;
             }

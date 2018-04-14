@@ -59,7 +59,7 @@ class splay_tree{
         return splay(vert);
     }
 
-    void spliting(node *vert, int key, node *&root1, node *&root2){
+    void spliting(node *vert, T key, node *&root1, node *&root2){
         if (vert == NULL){
             root1 = NULL;
             root2 = NULL;
@@ -99,21 +99,25 @@ class splay_tree{
         return right;
     }
 public:
-    node *removing(node *vert, int key){
+    node *main_root;
+		Red_Black_Tree(){
+			this->main_root = NULL;
+		}
+    node *removing(node *vert, T key){
         vert = finding(vert, key);
         set_parent(vert->left, NULL);
         set_parent(vert->right, NULL);
         return merging(vert->left, vert->right);
     }
 
-    node *inserting(node *vert, int key){
+    node *inserting(node *vert, T key){
         node *left, *right;
         spliting(vert, key, left, right);
         keep_parent(vert);
         return vert;
     }
 
-    node *finding(node *vert, int key){
+    node *finding(node *vert, T key){
         if (vert == NULL)
             return NULL;
         if (key == vert->key)
@@ -124,6 +128,7 @@ public:
             return finding(vert->right, key);
         return splay(vert);
     }
+
     void print(node *p, int level){
 		    if (p == NULL){
                 for(int i = 0; i < level; i++)
@@ -134,7 +139,7 @@ public:
             print(p->right, level+1);
             for(int i = 0; i < level; i++)
                 std::cout<<"\t";
-            std::cout<< p->data <<'\n';
+            std::cout<< p->key <<'\n';
             print(p->left, level+1);
         }
 };
