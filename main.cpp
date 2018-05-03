@@ -37,11 +37,19 @@ struct notebook{
 bool operator > (notebook a, notebook b){
     if (a.date.dat > b.date.dat)
         return true;
+    if (a.date.dat < b.date.dat)
+        return false;
+    if (a.date.dat > b.date.dat)
+        return true;
     else
         return false;
 }
 
 bool operator >= (notebook a, notebook b){
+    if (a.date.dat > b.date.dat)
+        return true;
+    if (a.date.dat < b.date.dat)
+        return false;
     if (a.date.dat >= b.date.dat)
         return true;
     else
@@ -49,6 +57,10 @@ bool operator >= (notebook a, notebook b){
 }
 
 bool operator < (notebook a, notebook b){
+    if (a.date.dat < b.date.dat)
+        return true;
+    if (a.date.dat > b.date.dat)
+        return false;
     if (a.date.dat < b.date.dat)
         return true;
     else
@@ -78,6 +90,10 @@ bool operator > (event a, event b){
 }
 
 bool operator >= (event a, event b){
+    if (a.name.size() > b.name.size())
+        return true;
+    if (a.name.size() < b.name.size())
+        return false;
     if (a.name >= b.name)
         return true;
     else
@@ -85,6 +101,10 @@ bool operator >= (event a, event b){
 }
 
 bool operator < (event a, event b){
+    if (a.name.size() < b.name.size())
+        return true;
+    if (a.name.size() > b.name.size())
+        return false;
     if (a.name < b.name)
         return true;
     else
@@ -114,7 +134,7 @@ ostream& operator<<(ostream& os, const notebook& dt)
 
 ostream& operator<<(ostream& os, const event& dt)
 {
-    os << dt.name << " in " << dt.place << ", " << dt.datepoint.dat;
+    os << dt.name << "_in_" << dt.place;// << ", " << dt.datepoint.dat;
     return os;
 }
 
@@ -203,16 +223,6 @@ int menu2() {
 //
 int main()
 {
-    /*
-    spacebinary_tree::btree<int> n_tree;
-    n_tree.insert(2);
-    n_tree.insert(4);
-    n_tree.insert(1);
-    n_tree.insert(10);
-    n_tree.insert(15);
-    n_tree.insert(25);
-    n_tree.make_gv("D:\\GViz\\1.gv");
-    */
     spacebinary_tree::btree<notebook> n_tree;
     spacebinary_tree::btree<event> e_tree;
     char c=0;
@@ -233,12 +243,46 @@ int main()
                 break;
             }
             case 1: {
-                system("Pause");
+                /////
+                char k = 0;
+                while (k != 5){
+                    k = menu2();
+                    system("cls");
+                    switch (k){
+                    case 0: {
+                        notebook data;
+                        cin.clear();
+                        getline(cin, data.date.dat);
+                        n_tree.search(data);
+                        break;
+                    }
+                    case 1: {
+                        event data;
+                        cin.clear();
+                        getline(cin, data.name);
+                        e_tree.search(data);
+                        break;
+                    }
+                    case 2: {
+                        n_tree.make_gv("D:\\GViz\\1.gv");
+                        break;
+                    }
+                    case 3: {
+                        e_tree.make_gv("D:\\GViz\\1.gv");
+                        break;
+                    }
+                    case 4: {
+                        return 0;
+                    }
+                    system("cls");
+                }
+                }
+                /////
                 break;
             }
-            /*case 8: {
-                return 0;
-            }*/
+            case 2: {
+                break;
+            }
             system("cls");
         }
     }

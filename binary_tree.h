@@ -50,7 +50,7 @@ public:
 {
   ofstream fout(output_file);
   fout << "digraph g{" << endl;
-  fout << "node [shape = record,height = .1];" << endl;
+  //fout << "node [shape = record,height = .1];" << endl;
   sub_gv(root, fout);
   fout << "}" << endl;
 }
@@ -60,12 +60,14 @@ private:
 ////
 void sub_gv(node *node, ofstream& file)
 {
+    if (node == NULL)
+        return;
   if (node->left != nullptr) {
-    file << node->key_value << "->" << node->left->key_value << ";\n";
+    file << '"' << node->key_value << '"' << " -> " << '"' << node->left->key_value << '"' << ";\n";
     sub_gv(node->left, file);
   }
   if (node->right != nullptr) {
-    file << node->key_value << "->" << node->right->key_value << ";\n";
+    file << '"' << node->key_value << '"' << "->" << '"' << node->right->key_value << '"' << ";\n";
     sub_gv(node->right, file);
   }
 }
