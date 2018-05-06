@@ -1,6 +1,8 @@
 #ifndef BINARY_TREE_H_INCLUDED
 #define BINARY_TREE_H_INCLUDED
 
+#define INF 0x3F3F3F3F
+
 using namespace std;
 
 namespace spacebinary_tree{
@@ -11,49 +13,134 @@ class btree{
         T key_value;
         node *left;
         node *right;
+        long long p;
     };
-
+    long long p_global;
+    vector<node*> pr;
+    vector<vector<long long>>weight, sum, rooted;
 public:
 
     btree(){
+        p_global = 0;
         root=NULL;
+    };
+    btree(node t){
+        this->key_value = t->key_value;
+        this->left = NULL;
+        this->right = NULL;
+        this->p = t->p;
     };
     ~btree(){
 			this->root = nullptr;
-		};
+    };
+
+    const T & operator=(const T& t) {
+        if (this != &t) {
+            this->~T();
+            new (this) T(t);
+        }
+        return *this;
+    }
 
     void Insert(T key){
-  if(root!=NULL)
-    insert(key, root);
-  else
-  {
-    root=new node;
-    root->key_value=key;
-    root->left=NULL;
-    root->right=NULL;
-  }
-};
+        node *n = new node;
+        n->left = NULL;
+        n->right = NULL;
+        n->key_value = key;
+        n->p = 0;
+        pr.push_back(n);
+    };
 
     node *search(T key){
-  return search(key, root);
-};
+        node* s= search(key, root);
+        s->p = s->p+1;
+        p_global++;
+        return s;
+    };
 
     void destroy_tree(){
-  destroy_tree(root);
-};
+        destroy_tree(root);
+    };
 
     void print(){
         print(root, 0);
     }
     ////
     void make_gv(string output_file)
-{
-  ofstream fout(output_file);
-  fout << "digraph g{" << endl;
-  //fout << "node [shape = record,height = .1];" << endl;
-  sub_gv(root, fout);
-  fout << "}" << endl;
-}
+    {
+        make_graph();
+        ofstream fout(output_file);
+        fout << "digraph g{" << endl;
+        //fout << "node [shape = record,height = .1];" << endl;
+        sub_gv(root, fout);
+        fout << "}" << endl;
+    }
+
+    node *build_graph(int left, int right){
+        if (left <= right){
+            node* nnode = new node;
+            nnode = pr[rooted[left][right]-1];
+            nnode->left = build_graph(left, rooted[left][right]-1);
+            nnode->right = build_graph(rooted[left][right]+1, right);
+            return nnode;
+        }
+        return NULL;
+    }
+
+    void make_graph(){
+        cout << "start" << endl;
+        /*sum.clear();
+        rooted.clear();
+        weight.clear();*/
+        sum.resize(pr.size()+2);
+        rooted.resize(pr.size()+2);
+        weight.resize(pr.size()+2);
+        for (long long i = 0 ; i < pr.size()+2; i++){
+            sum[i].resize(pr.size()+2);
+            rooted[i].resize(pr.size()+2);
+            weight[i].resize(pr.size()+2);
+        }
+        cout << "after resize" << endl;
+        /*for (long long i = 0; i <= pr.size(); i++){
+            sum[i][i-1] = 0;
+            weight[i][i-1] = 0;
+        }*/
+        for (long long l = 1; l <= pr.size(); l++)
+        for (long long i = 1; i <= pr.size()-l+1; i++){
+            long long j = i+l-1;
+            sum[i][j] = INF;
+            weight[i][j] = weight[i][j-1]+pr[j-1]->p;
+            for (long long r = i; r <= j; r++){
+                long long t = sum[i][r-1]+sum[r+1][j]+weight[i][j];
+                if (t < sum[i][j]){
+                    sum[i][j] = t;
+                    rooted[i][j] = r;
+                }
+            }
+        }
+        cout << "after fill rooted and sum and weight" << endl;
+        for (int i = 0; i<=pr.size(); i++){
+            for (int j = 0; j <=pr.size(); j++)
+                cout << rooted[i][j] << ' ';
+            cout << endl;
+        }
+        cout << "before search" << endl;
+        root = nullptr;
+        if (root != nullptr){
+            for (long long l = 0; l < pr.size(); l++){
+                node *t = search(pr[l]->key_value);
+                t->p -= 1;
+                pr[l]->p = t->p;
+            }
+        }
+        cout << "after search" << endl;
+        cout << "before build" << endl;
+        root = build_graph(1, pr.size());
+        cout << "after build" << endl;
+    }
+
+
+
 
 /////
 private:
@@ -62,11 +149,11 @@ void sub_gv(node *node, ofstream& file)
 {
     if (node == NULL)
         return;
-  if (node->left != nullptr) {
+  if (node->left != NULL) {
     file << '"' << node->key_value << '"' << " -> " << '"' << node->left->key_value << '"' << ";\n";
     sub_gv(node->left, file);
   }
-  if (node->right != nullptr) {
+  if (node->right != NULL) {
     file << '"' << node->key_value << '"' << "->" << '"' << node->right->key_value << '"' << ";\n";
     sub_gv(node->right, file);
   }

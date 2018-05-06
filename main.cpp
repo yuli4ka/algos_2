@@ -11,7 +11,7 @@ using namespace std;
 struct date{
     string dat;
     date(){
-        dat = " ";
+        dat = "";/////ашкн " "
     }
 };
 
@@ -124,7 +124,6 @@ bool operator == (event a, event b){
     else
         return false;
 }
-//
 
 ostream& operator<<(ostream& os, const notebook& dt)
 {
@@ -244,6 +243,12 @@ int main()
             }
             case 1: {
                 /////
+                cout << "lol\n";
+                e_tree.make_graph();
+                cout << "lol\n\n";
+                n_tree.make_graph();
+                cout << "lol\n";
+                system("pause");
                 char k = 0;
                 while (k != 5){
                     k = menu2();
@@ -272,6 +277,10 @@ int main()
                         break;
                     }
                     case 4: {
+                        e_tree.print();
+                        cout << endl << endl << endl;
+                        n_tree.print();
+                        system("Pause");
                         return 0;
                     }
                     system("cls");
