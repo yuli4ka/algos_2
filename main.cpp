@@ -83,6 +83,10 @@ bool operator == (notebook a, notebook b){
 
 //
 bool operator > (event a, event b){
+    if (a.name.size() > b.name.size())
+        return true;
+    if (a.name.size() < b.name.size())
+        return false;
     if (a.name > b.name)
         return true;
     else
@@ -248,7 +252,7 @@ int main()
                 cout << "lol\n\n";
                 n_tree.make_graph();
                 cout << "lol\n";
-                system("pause");
+                //system("pause");//////////////////////////////////////////
                 char k = 0;
                 while (k != 5){
                     k = menu2();

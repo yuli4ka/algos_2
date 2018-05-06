@@ -53,8 +53,10 @@ public:
 
     node *search(T key){
         node* s= search(key, root);
-        s->p = s->p+1;
-        p_global++;
+        if (s!=NULL){
+            s->p = s->p+1;
+            p_global++;
+        }
         return s;
     };
 
@@ -150,11 +152,12 @@ void sub_gv(node *node, ofstream& file)
     if (node == NULL)
         return;
   if (node->left != NULL) {
-    file << '"' << node->key_value << '"' << " -> " << '"' << node->left->key_value << '"' << ";\n";
+    file << '"' << node->key_value << '\n' << node->p << '"' << " -> " << '"' << node->left->key_value << '\n' << node->left->p << '"' << ";\n";
     sub_gv(node->left, file);
   }
+  file << '"' << node->key_value << '\n' << node->p << '"';
   if (node->right != NULL) {
-    file << '"' << node->key_value << '"' << "->" << '"' << node->right->key_value << '"' << ";\n";
+    file << '"' << node->key_value << '\n' << node->p << '"' << "->" << '"' << node->right->key_value << '\n' << node->right->p << '"' << ";\n";
     sub_gv(node->right, file);
   }
 }
@@ -215,8 +218,9 @@ void sub_gv(node *node, ofstream& file)
   {
     if(key==leaf->key_value)
       return leaf;
-    if(key<leaf->key_value)
-      return search(key, leaf->left);
+    node *s =search(key, leaf->left);
+    if(s!=NULL)
+      return s;
     else
       return search(key, leaf->right);
   }
