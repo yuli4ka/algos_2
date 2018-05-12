@@ -112,6 +112,7 @@ namespace spacePersistent_Red_Black_Tree{
             }
                 ////
             roots.push_back(new_root);
+            //std::cout << std::endl << new_root->data << std::endl;
             bool found = false;
             while (!found) {
                 node->parent = parent_node;
@@ -142,7 +143,7 @@ namespace spacePersistent_Red_Black_Tree{
                 node->right->parent = node;
                 }
                 fix_up_node = node->right;
-                replace_(node, node->right, version);
+                replace_(node, node->right, version+1);
             }
             else if (!node->right) {
                 if (node->left) {
@@ -150,7 +151,7 @@ namespace spacePersistent_Red_Black_Tree{
                     node->left->parent = node;
                 }
                 fix_up_node = node->left;
-                replace_(node, node->left, version);
+                replace_(node, node->left, version+1);
             }
             else {
                 node->right = new TreeNode(node->right);
@@ -167,19 +168,20 @@ namespace spacePersistent_Red_Black_Tree{
                         fix_up_node->parent = successor;
                 }
                 else {
-                    replace_(successor, successor->right, version);
+                    replace_(successor, successor->right, version+1);
                     successor->right = node->right;
                     if (successor->right)
                         successor->right->parent = successor;
                 }
-                replace_(node, successor, version);
+                replace_(node, successor, version+1);
                 successor->left = node->left;
                 successor->left->parent = successor;
                 successor->red = node->red;
             }
             std::cout << "before balance" << std::endl;
             if (node_original_color == false)
-                deleteBalance(fix_up_node, version);
+                //deleteBalance(successor, version);
+                deleteBalance(fix_up_node, version+1);
             std::cout << "after balance" << std::endl;
             delete node;
         }
@@ -194,6 +196,9 @@ namespace spacePersistent_Red_Black_Tree{
                 root = GetLastRoot();
             else
                 root = roots[version];
+            for (int i = 0; i < roots.size(); i++)
+                std::cout << roots[i]->data << std::endl;
+            std::cout << std::endl << root->data << std::endl;
             sub_gv(root, fout);
             fout << "}" << std::endl;
         }
@@ -225,8 +230,12 @@ namespace spacePersistent_Red_Black_Tree{
         }
 
 	    void replace_(TreeNode *old_node, TreeNode *new_node, int version){
-            if (!old_node->parent)
+            if (!old_node->parent){
+                std::cout << std::endl << "replace" << std::endl;
+                std::cout << std::endl << old_node->data << std::endl;
+                std::cout << std::endl << new_node->data << std::endl;
                 roots[version] = new_node;
+            }
             else if (old_node == old_node->parent->left)
                 old_node->parent->left = new_node;
             else
@@ -289,7 +298,12 @@ namespace spacePersistent_Red_Black_Tree{
 
 		void deleteBalance(TreeNode *node, int version){
 			TreeNode *brother = nullptr;
-            while (node != roots[version] && node){//} && node->red == false && node) { /////there was while
+			if (node == nullptr)
+                std::cout << std::endl << "nullptr" << std::endl;
+            else
+                std::cout << std::endl << node->data << std::endl;
+            while (node != roots[version] && node != nullptr){//} && node->red == false && node) { /////there was while
+                std::cout << std::endl << "do delete balance" << std::endl;
                 if (node == node->parent->left) {
                     brother = node->parent->right;
                     if (brother->red == true) {
