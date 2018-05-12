@@ -45,14 +45,17 @@ namespace spacePersistent_Red_Black_Tree{
 		//////
 
 		void Insert(T data, int version = -1){
-		    if (find_(data, version))
-                return;
-            TreeNode *parent_node = nullptr, *new_root = nullptr,
+		    //
+		    TreeNode *parent_node = nullptr, *new_root = nullptr,
                     *new_node;
-            if (version < 0)
+		    if (version < 0)
                 new_node = GetLastRoot();
             else
                 new_node = roots[version];
+            //
+		    if (find_(data, version))
+                return;
+            //
             if (new_node){
                 new_root = new TreeNode(new_node);
                 new_node = new_root;
@@ -99,17 +102,21 @@ namespace spacePersistent_Red_Black_Tree{
                 node = GetLastRoot();
             else
                 node = roots[version];
-            if (node) {
-                new_root = new TreeNode(node);
-                node = new_root;
-            }
             if (version < 0)
-                version = roots.size()-1; ///////
-                ////
+                version = roots.size()-1;
+                                std::cout << "version=" << version << std::endl;
+                            if (version >= 0)
+                                std::cout << roots[version]->data << std::endl;
             if (!find_(data, version)){
                 std::cout << "searching say no" << std::endl;
                 return;
             }
+            if (node) {
+                new_root = new TreeNode(node);
+                node = new_root;
+            }
+             ///////
+                ////
                 ////
             roots.push_back(new_root);
             //std::cout << std::endl << new_root->data << std::endl;
@@ -196,9 +203,9 @@ namespace spacePersistent_Red_Black_Tree{
                 root = GetLastRoot();
             else
                 root = roots[version];
-            for (int i = 0; i < roots.size(); i++)
+            /*for (int i = 0; i < roots.size(); i++)
                 std::cout << roots[i]->data << std::endl;
-            std::cout << std::endl << root->data << std::endl;
+            std::cout << std::endl << root->data << std::endl;*/
             sub_gv(root, fout);
             fout << "}" << std::endl;
         }
@@ -422,7 +429,7 @@ namespace spacePersistent_Red_Black_Tree{
 		//
 	public:
 	    TreeNode *find_(T data, int version = -1){
-            if (version >= roots.size())
+            if (version > roots.size())
                 return nullptr;
             TreeNode *node;
             if (version < 0 )
