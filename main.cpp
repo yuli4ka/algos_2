@@ -302,7 +302,7 @@ int main()
     e_tree.print();
     cout << endl << endl << endl;
     n_tree.print();
-    system("Pause");
+    //system("Pause");
 	return 0;
 }
 
