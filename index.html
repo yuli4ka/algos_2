@@ -7,6 +7,18 @@
           href="https://fonts.googleapis.com/css?family=PT+Sans">
 
     <style>
+        @font-face {
+            font-family: 'ABeeZee';
+            font-style: normal;
+            font-weight: 400;
+            src: url('abeezee-v11-latin-regular.eot'); /* IE9 Compat Modes */
+            src: local('ABeeZee Regular'), local('ABeeZee-Regular'),
+            url('abeezee-v11-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('abeezee-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+            url('abeezee-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
+            url('abeezee-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+            url('abeezee-v11-latin-regular.svg#ABeeZee') format('svg'); /* Legacy iOS */
+        }
         body{
             font-family: 'PT Sans', sans-serif;
             font-size: 14px;
@@ -16,11 +28,14 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 98vw;
             min-height: 100vh;
         }
         .header{
-            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 98vw;
             height: 16vw;
             background-color: #dddddd;
         }
@@ -29,10 +44,29 @@
             max-width: 1000px;
             padding: 10px;
             height: 7vw;
-            top: 3.5vw;
+            top: 3.3vw;
             margin-right: auto;
             margin-left: auto;
-            background-color: black;
+            line-height: 1px;
+        }
+        .logo{
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            height: 7vw;
+            width: 7vw;
+            background: #000;
+        }
+        .company_name{
+            position: absolute;
+            left: 9vw;
+            font-size: 1.5vw;
+        }
+        .company_phones{
+            position: absolute;
+            right: 10px;
+            font-size: 2.5vw;
+            font-family: 'ABeeZee';
         }
         .region{
             height: 190vh;
@@ -66,7 +100,7 @@
         .footer{
             position: absolute;
             bottom: 0;
-            width: 100vw;
+            width: 98vw;
             height: 16vw;
             background-color: #787878;
         }
@@ -77,7 +111,16 @@
 <div class="body_region">
     <div class="header">
         <div class="head_data">
-            <div class="company"></div>
+            <div class="logo"></div>
+            <div class="company_name">
+                <h1>Company</h1>
+                <h1>Name</h1>
+                <p>The best company</p>
+            </div>
+            <div class="company_phones">
+                <p>+7(499)777-77-77</p>
+                <p>+7(499)777-77-77</p>
+            </div>
         </div>
     </div>
 
