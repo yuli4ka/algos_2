@@ -28,14 +28,14 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 98vw;
+            width: 100vw;
             min-height: 100vh;
         }
         .header{
             position: absolute;
             top: 0;
             left: 0;
-            width: 98vw;
+            width: 100vw;
             height: 16vw;
             background-color: #dddddd;
         }
@@ -69,9 +69,9 @@
             font-family: 'ABeeZee';
         }
         .region{
-            height: 190vh;
+            /*height: 190vh;*/
             min-height: 71vh;
-            width: 98vw;
+            width: 100vw;
         }
         .menu{
             position: absolute;
@@ -80,6 +80,48 @@
             width: 100vw;
             height: 5.36vw;
             background-color: #777777;
+        }
+        ul.menu_list{
+            list-style: none;
+            margin-top: 1.2vw;
+            text-align: center;
+        }
+        ul.menu_list li{
+            display: inline;
+            margin: 1vw;
+        }
+        ul.menu_list li:after{
+            content: "|";
+            color: white;
+            margin-left: 2vw;
+            display: inline;
+            vertical-align: top;
+        }
+        ul.menu_list li:last-child:after{
+            content: none;
+        }
+        ul.menu_list a{
+            text-decoration: none;
+            color: white;
+        }
+        ul.menu_list a:hover{
+            text-decoration: underline;
+        }
+        ul.footer_list{
+            position: absolute;
+            left: 39.3vw;
+            top: 0;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul.footer_list a{
+            color: white;
+            font-size: 1vw;
+            padding: 0;
+            margin: 0;
+            line-height: normal;
+            text-decoration: underline;
         }
         .slider{
             position: absolute;
@@ -100,7 +142,7 @@
         .footer{
             position: absolute;
             bottom: 0;
-            width: 98vw;
+            width: 100vw;
             height: 16vw;
             background-color: #787878;
         }
@@ -125,10 +167,26 @@
     </div>
 
     <div class="region">
-
+        <div class="menu">
+            <ul class="menu_list">
+                <li><a href="">Главная</a></li>
+                <li><a href="">Каталог</a></li>
+                <li><a href="">Доставка и оплата</a></li>
+                <li><a href="">Прайс-лист</a></li>
+                <li><a href="">Контакты</a></li>
+            </ul>
+        </div>
     </div>
 
-    <div class="footer"></div>
+    <div class="footer">
+        <ul class="footer_list">
+            <li><a href="">Главная</a></li>
+            <li><a href="">Каталог</a></li>
+            <li><a href="">Доставка и оплата</a></li>
+            <li><a href="">Прайс-лист</a></li>
+            <li><a href="">Контакты</a></li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>
