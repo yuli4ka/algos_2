@@ -12,10 +12,16 @@
             font-size: 14px;
             line-height: 22px;
         }
+        .body_region{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            min-height: 100vh;
+        }
         .header{
-            width: 98vw;
-            height: 16vw;
-            min-height: 13vh;
+            width: 100vw;
+            height: 13vh;
             background-color: #dddddd;
         }
         .head_data{
@@ -29,7 +35,8 @@
             background-color: black;
         }
         .region{
-            min-height: 74vh;
+            height: 190vh;
+            min-height: 71vh;
             width: 98vw;
         }
         .menu{
@@ -57,25 +64,26 @@
             background-color: red;
         }
         .footer{
-            width: 98vw;
-            height: 16vw;
-            min-height: 13vh;
+            position: absolute;
+            bottom: 0;
+            width: 100vw;
+            height: 13vh;
             background-color: #787878;
         }
     </style>
 
 </head>
 <body>
+<div class="body_region">
     <div class="header">
         <div class="head_data">
             <div class="company"></div>
         </div>
     </div>
 
-<div class="region">
 
-</div>
 
     <div class="footer"></div>
+</div>
 </body>
 </html>
