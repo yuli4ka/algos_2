@@ -25,14 +25,16 @@
             line-height: 22px;
         }
         .body_region{
-            position: absolute;
+            position: relative;
             top: 0;
             left: 0;
             width: 100vw;
-            min-height: 100vh;
+            min-height: 96vh;
+            margin: 0;
+            padding: 0;
         }
         .header{
-            position: absolute;
+            position: relative;
             top: 0;
             left: 0;
             width: 100vw;
@@ -69,17 +71,15 @@
             font-family: 'ABeeZee';
         }
         .region{
-            position: absolute;
-            top: 16vw;
+            position: relative;
+            top: -2vw;
             left: 0;
-            /*height: 190vh;
-            min-height: 71vh;*/
             width: 100vw;
         }
         .menu{
-            position: absolute;
+            /*position: absolute;
             top: 0;
-            left: 0;
+            left: 0;*/
             width: 100vw;
             height: 5.36vw;
             background-color: #777777;
@@ -128,23 +128,32 @@
             text-decoration: underline;
         }
         .slider{
-            position: absolute;
+            /*position: absolute;
             top: 21.36vw;
-            left: 0;
+            left: 0;*/
             width: 100vw;
             height: 32.14vw;
             background-color: #f8f8f8;
+            overflow: hidden; /*perfect idea*/
         }
         .slider_image{
             text-align: center;
         }
         .content{
-            position: absolute;
+            /*position: relative;
             top: 53.5vw;
-            left: 0;
+            left: 0;*/
             width: 100vw;
-            height: 57.14vw;
-            background-color: red;
+            height: 73.14vw;
+            background-color: skyblue;
+        }
+        .content_news{
+            position: relative;
+            top: 3.57vw;
+            left: 14.3vw;
+            width: 17.86vw;
+            height: 39.3vw;
+            background-color: black;
         }
         .footer{
             position: absolute;
@@ -197,10 +206,17 @@
             </ul>
         </div>
         <div class="slider">
-            <p class="slider_image"><img src="balls.jpg"></p>
+            <p class="slider_image"><img src="balls.jpg" style="width: 1000px"></p>
         </div>
         <div class="content">
+            <div class="content_news">
+                <div style="height:200px;width:500px;overflow-y:scroll;">
 
+                    Тут ваш контент
+
+                </div>
+
+            </div>
         </div>
     </div>
 
